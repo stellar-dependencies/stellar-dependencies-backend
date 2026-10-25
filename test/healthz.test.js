@@ -104,3 +104,29 @@ test('GET /healthz is exempt from rate limiting', async () => {
     await stopServer(server);
   }
 });
+
+test('GET /does-not-exist returns a JSON 404', async () => {
+  const server = await startServer();
+  try {
+    const res = await request(server, '/does-not-exist');
+    assert.strictEqual(res.statusCode, 404);
+    assert.match(res.headers['content-type'] || '', /application\/json/);
+    const parsed = JSON.parse(res.body);
+    assert.ok(parsed.error, 'expected an error field in the JSON body');
+  } finally {
+    await stopServer(server);
+  }
+});
+
+test('GET /index.html is not served as a static asset and returns a JSON 404', async () => {
+  const server = await startServer();
+  try {
+    const res = await request(server, '/index.html');
+    assert.strictEqual(res.statusCode, 404);
+    assert.match(res.headers['content-type'] || '', /application\/json/);
+    const parsed = JSON.parse(res.body);
+    assert.ok(parsed.error, 'expected an error field in the JSON body');
+  } finally {
+    await stopServer(server);
+  }
+});

@@ -250,7 +250,7 @@ When you deploy the frontend, make sure:
 ## Docker Build Notes
 
 - The image is built with `docker build -t dependencylens-backend .` from the repository root.
-- `.dockerignore` excludes `docs/` and `tests/` from the build context, keeping the image small and the build fast. Documentation and test files are therefore **not** present inside the image — this is expected.
+- `.dockerignore` excludes `docs/` and `test/` from the build context, keeping the image small and the build fast. Documentation and test files are therefore **not** present inside the image — this is expected.
 - Set `HOST=0.0.0.0` when running in a container so the service is reachable from outside the container.
 
 ---

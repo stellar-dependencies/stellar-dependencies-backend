@@ -385,11 +385,6 @@ async function handleRequest(req, res, config, logger, requestId) {
     return;
   }
 
-  if (req.method === 'GET' && pathname === '/health') {
-    sendJson(res, 200, { status: 'ok' }, requestId);
-    return;
-  }
-
   // Rate limiting applies to all other routes.
   if (isRateLimited(req)) {
     res.setHeader('Retry-After', Math.ceil(RATE_LIMIT_WINDOW_MS / 1000));
@@ -429,6 +424,8 @@ async function handleRequest(req, res, config, logger, requestId) {
     return;
   }
 
+  // Catch-all: unknown routes return a JSON 404. The API server no longer
+  // serves frontend assets; the UI lives in a separate repository.
   sendJson(res, 404, { error: 'not_found' }, requestId);
 }
 
